@@ -1,20 +1,25 @@
 import { Box, Button, Stack, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import MicIcon from '@mui/icons-material/Mic';
-import { useRef, useState } from 'react';
-import AudioRecorder from './AudioRecorder';
+import { useEffect, useRef, useState } from 'react';
 import { fileToBase64 } from '../utils/fileToBase64';
 
 interface ChatToolbarProps {
   onClear: () => void;
   onFileAttach: (file: File) => void;
+  resetTrigger: boolean;
 }
 
-function ChatToolbar({ onClear }: ChatToolbarProps) {
-  const [lastAudioPreview, setLastAudioPreview] = useState<string | null>(null);
+function ChatToolbar({ onClear, onFileAttach, resetTrigger }: ChatToolbarProps) {
   const [attachedFileName, setAttachedFileName] = useState<string | null>(null);
+  const [attachedFilePreview, setAttachedFilePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Limpieza cuando cambia el trigger
+  useEffect(() => {
+    setAttachedFileName(null);
+    setAttachedFilePreview(null);
+  }, [resetTrigger]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,7 +28,13 @@ function ChatToolbar({ onClear }: ChatToolbarProps) {
 
     const base64 = await fileToBase64(file);
     setAttachedFileName(file.name);
-    console.log(`📎 Archivo "${file.name}" en base64:`, base64.slice(0, 50) + '...');
+
+    if (file.type.startsWith('image/')) {
+      const objectURL = URL.createObjectURL(file);
+      setAttachedFilePreview(objectURL);
+    } else {
+      setAttachedFilePreview(null);
+    }
   };
 
   return (
@@ -37,11 +48,6 @@ function ChatToolbar({ onClear }: ChatToolbarProps) {
         >
           Borrar chat
         </Button>
-
-        <AudioRecorder onComplete={(base64Audio) => {
-          setLastAudioPreview(base64Audio);
-          console.log('🎤 Base64 audio:', base64Audio.slice(0, 50) + '...');
-        }} />
 
         <input
           type="file"
@@ -58,7 +64,16 @@ function ChatToolbar({ onClear }: ChatToolbarProps) {
 
       {attachedFileName && (
         <Typography variant="caption" color="textSecondary">
-          Archivo adjunto listo: {attachedFileName}
+          {attachedFilePreview ? (
+            <>
+              <div style={{ marginBottom: 4 }}>
+                <img src={attachedFilePreview} alt="preview" style={{ width: 50, height: 'auto' }} />
+              </div>
+              Imagen adjunta: {attachedFileName}
+            </>
+          ) : (
+            `Archivo adjunto: ${attachedFileName}`
+          )}
         </Typography>
       )}
     </Box>

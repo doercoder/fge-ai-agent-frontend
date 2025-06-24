@@ -38,10 +38,25 @@ export const useChatStream = () => {
         const lines = chunk.split("\n");
 
         for (const line of lines) {
-          const cleaned = line.replace(/^data:\s*/, "").trim();
-          if (!cleaned) continue;
+          const cleaned = line.startsWith("data: ") ? line.slice(6).trim() : line.trim();
 
-          // Añadir espacio si el último carácter no era un separador
+          if (!cleaned) continue;
+          console.log("🧼 Token limpio:", cleaned);
+          // 🐞 DEBUG: Ver el token limpio que llega
+          console.log("🧼 Token limpio del stream:", cleaned);
+
+          // ✅ Si parece ser un JSON completo, lo pasamos como está
+          if (cleaned.startsWith("{") && cleaned.endsWith("}")) {
+            try {
+              JSON.parse(cleaned); // validamos que sea parseable
+              onToken(cleaned); // enviamos el JSON entero al frontend
+              continue;
+            } catch (err) {
+              console.warn("❌ No se pudo parsear JSON del stream:", cleaned);
+            }
+          }
+
+          // ⏳ Modo acumulación por frases normales (tokens tipo texto)
           if (
             buffer &&
             !buffer.endsWith(" ") &&
@@ -53,7 +68,6 @@ export const useChatStream = () => {
 
           buffer += cleaned;
 
-          // Emitir cuando hay una frase con puntuación o más de 12 palabras
           if (
             /[.!?]$/.test(buffer.trim()) ||
             buffer.trim().split(/\s+/).length > 12
@@ -68,7 +82,6 @@ export const useChatStream = () => {
         }
       }
 
-      // Emitir lo que quede
       const final = buffer.trim();
       if (final && final !== lastFlush) {
         onToken(final);

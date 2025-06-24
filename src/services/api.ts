@@ -10,7 +10,6 @@ export const uploadDocument = async (payload: {
   return res.data;
 };
 
-
 export const searchDocuments = async (query: string) => {
   const res = await axios.get(`${API_BASE_URL}/mcp/search`, {
     params: { query }
@@ -24,5 +23,25 @@ export const sendChatMessage = async (payload: {
   message: string;
 }) => {
   const res = await axios.post(`${API_BASE_URL}/chat`, payload);
+  return res.data;
+};
+
+// 📄 NUEVOS ENDPOINTS DEL MCP
+export const getAllDocuments = async () => {
+  const res = await axios.get(`${API_BASE_URL}/documents`);
+  return res.data;
+};
+
+export const processDocument = async (payload: {
+  title: string;
+  base64_data: string;
+  file_type: 'pdf' | 'image';
+}) => {
+  const res = await axios.post(`${API_BASE_URL}/process-document`, payload);
+  return res.data;
+};
+
+export const getMcpDocuments = async () => {
+  const res = await axios.get(`${API_BASE_URL}/mcp/explore-dir`);
   return res.data;
 };

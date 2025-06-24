@@ -21,6 +21,7 @@ import UploadDocument from './components/UploadDocument';
 import SearchBox from './components/SearchBox';
 import GarbageSchedule from './components/cases/GarbageSchedule';
 import PotholeReport from './components/cases/PotholeReport';
+import McpPanel from './components/cases/McpPanel';
 import ChatBox from './components/ChatBox';
 
 const drawerWidth = 240;
@@ -38,26 +39,31 @@ function App() {
       <Toolbar />
       <Divider />
       <List>
-        <ListItem button onClick={() => setActiveModule('upload')}>
+        {/* <ListItem button onClick={() => setActiveModule('upload')}>
           <ListItemIcon><DescriptionIcon /></ListItemIcon>
           <ListItemText primary="Subir archivo" />
-        </ListItem>
+        </ListItem> */}
         <ListItem button onClick={() => setActiveModule('search')}>
           <ListItemIcon><SearchIcon /></ListItemIcon>
           <ListItemText primary="Buscar" />
         </ListItem>
         <ListItem button onClick={() => setActiveModule('chat')}>
           <ListItemIcon><ChatIcon /></ListItemIcon>
-          <ListItemText primary="Chat" />
+          <ListItemText primary="💬 Chat General" />
         </ListItem>
-        <ListItem button onClick={() => setActiveModule('garbage')}>
+        {/* <ListItem button onClick={() => setActiveModule('garbage')}>
           <ListItemIcon><ChatIcon /></ListItemIcon>
           <ListItemText primary="🗑️ Recolección de basura" />
         </ListItem>
         <ListItem button onClick={() => setActiveModule('pothole')}>
           <ListItemIcon><ChatIcon /></ListItemIcon>
           <ListItemText primary="🚧 Reportar bache o poste" />
+        </ListItem> */}
+        <ListItem button onClick={() => setActiveModule('mcp')}>
+          <ListItemIcon><DescriptionIcon /></ListItemIcon>
+          <ListItemText primary="📂 MCP" />
         </ListItem>
+
       </List>
     </div>
   );
@@ -69,11 +75,31 @@ function App() {
       case 'search':
         return <SearchBox />;
       case 'chat':
-        return <ChatBox />;
+        return (
+          <ChatBox
+            initialPrompt=""
+            title="💬 Asistente Municipal General"
+            userId="user_general"
+            sessionId="session_general"
+            enableToolbar={true}
+          />
+        );
       case 'garbage':
         return <GarbageSchedule />;
-      default:
-        return <ChatBox />;
+      case 'pothole':
+        return <PotholeReport />;
+      case 'mcp':
+        return <McpPanel />;
+      case 'default':
+        return (
+          <ChatBox
+            initialPrompt=""
+            title="💬 Asistente Municipal General"
+            userId="user_general"
+            sessionId="session_general"
+            enableToolbar={true}
+          />
+        );
     }
   };
 

@@ -92,6 +92,7 @@ Ejemplo:
 🧠 Relación con la prueba técnica
 Este frontend cubre los siguientes aspectos del enunciado:
 
+✅ Busqueda por coincidencia con pgVector (Semántica y de parecido a nivel archivo)
 ✅ Chat con respuesta en lenguaje natural
 ✅ Respuesta en tiempo real (streaming)
 ✅ Adjuntar archivos e imágenes
@@ -101,14 +102,11 @@ Este frontend cubre los siguientes aspectos del enunciado:
 
 🧩 Próximas mejoras sugeridas
 Soporte para grabación de voz y transcripción automática
-
 Memoria multiturno usando Agno Memory o Zep
-
 Renderizado de respuesta estructurada en JSON
-
 Panel administrativo para ver reportes ciudadanos
 
 🤝 Créditos
-Desarrollado por [Tu Nombre] como parte de la prueba técnica para Genesis Empresarial.
-Para consultas o mejoras, contacta a: [tu correo].
+Desarrollado por David Omar Enriquez Reyes como parte de la prueba técnica para Genesis Empresarial.
+Para consultas o mejoras, contacta a: doer.factore@gmail.com.
 

@@ -1,54 +1,114 @@
-# React + TypeScript + Vite
+# 🧠 FGE AI Agent Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el **frontend React** del proyecto de agente de inteligencia artificial multimodal desarrollado para la **Municipalidad de Momostenango**, como parte del examen técnico de Genesis Empresarial.
 
-Currently, two official plugins are available:
+Permite a los usuarios interactuar con un agente AI que procesa entradas en lenguaje natural, imágenes y documentos PDF, ofreciendo respuestas contextualizadas y en tiempo real.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Tecnologías Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 18** con Vite
+- **TypeScript**
+- **Material UI** (interfaz moderna y responsiva)
+- **Axios** (consumo de APIs)
+- **Streaming con fetch/readableStream** (respuesta token a token)
+- **Soporte de archivos e imágenes** con `FileReader` y conversión base64
+- **Diseño modular y flexible** para ampliar casos de uso
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎯 Funcionalidades Clave
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Chat en tiempo real** con streaming de tokens (`/chat-stream`)
+- **Botón para borrar chat** (reinicia la conversación sin recargar)
+- **Carga de imágenes y PDFs** (procesadas vía API backend `/process-document`)
+- **Visualización y búsqueda de documentos** disponibles
+- **Módulos especializados por caso de uso**:
+  - Recolección de basura
+  - Reporte de baches o postes
+  - Plantillas municipales (formulario PDF)
+  - Dudas tributarias
+  - Agendamiento de citas
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 📁 Estructura de carpetas
+
+```plaintext
+src/
+├── components/         # Componentes reutilizables (ChatBox, McpPanel, etc.)
+├── components/cases/   # Vistas para cada caso de uso
+├── hooks/              # Hooks personalizados como useChatStream
+├── services/           # Módulos de conexión a APIs
+├── utils/              # Utilidades generales como fileToBase64
+├── App.tsx            # Layout principal
+└── main.tsx           # Entrada de la aplicación
+
+
+📦 Instalación y ejecución
+
+# 1. Clonar el repositorio
+git clone https://github.com/usuario/fge-ai-agent-frontend.git
+cd fge-ai-agent-frontend
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Crear archivo de entorno
+cp .env.example .env
+# Editar .env con la URL del backend (ejemplo)
+# VITE_API_BASE_URL=http://localhost:8000
+
+# 4. Ejecutar en modo desarrollo
+npm run dev
+
+🧪 Casos de Uso Implementados
+🗑️ Consulta de recolección de basura
+
+🚧 Reporte de baches/postes con imagen
+
+📄 Descarga de formularios municipales
+
+🧾 Preguntas sobre impuestos locales
+
+📅 Agendamiento de citas
+
+Los casos 1 y 2 originalmente estaban pensados para ser utilizados de forma individual, pero realmente al final los casos 3, 4 y 5 invitaban a formar un solo chat, personalemtne comento que de haber tenido más tiempo o de ser este un proyecto con un fin ulterior a la prueba técnica me habría gustado expandirlos, ralmente son tecnologías muy interesantes, recientes y útiles, tampoco son demasiado complejas de usar (quiza sí de entender) y lo notas cuando ya haz tenido el tiempo para desarrollar o utilizarlas.
+
+🔧 Personalización
+Puedes extender el agente o adaptar el prompt inicial modificando el initialPrompt en cada componente ChatBox.
+
+Ejemplo:
+
+<ChatBox
+  title="🗑️ Consulta de recolección de basura"
+  userId="user_garbage"
+  sessionId="session_garbage"
+  initialPrompt="Eres un asistente experto en los horarios de recolección de basura por zonas..."
+/>
+
+
+🧠 Relación con la prueba técnica
+Este frontend cubre los siguientes aspectos del enunciado:
+
+✅ Chat con respuesta en lenguaje natural
+✅ Respuesta en tiempo real (streaming)
+✅ Adjuntar archivos e imágenes
+✅ Persistencia de sesiones (coordinado con backend)
+✅ Casos de uso requeridos y ampliables
+✅ Modularidad y claridad en la estructura de código
+
+🧩 Próximas mejoras sugeridas
+Soporte para grabación de voz y transcripción automática
+
+Memoria multiturno usando Agno Memory o Zep
+
+Renderizado de respuesta estructurada en JSON
+
+Panel administrativo para ver reportes ciudadanos
+
+🤝 Créditos
+Desarrollado por [Tu Nombre] como parte de la prueba técnica para Genesis Empresarial.
+Para consultas o mejoras, contacta a: [tu correo].
+
